@@ -1,0 +1,14 @@
+(defn scols [dataset cols]
+  (let [original-meta (meta dataset)
+        matched-cols (filter (set (column-names dataset)) cols)
+        rows (->> dataset :rows (map #(select-keys % matched-cols)))]
+    (with-meta
+      (grafter.tabular/make-dataset rows matched-cols)
+      original-meta)))
+
+(defn select-columns2 [dataset selector-fn]
+  "Select columns using a function"
+  (let [selected-columns (filter selector-fn (column-names dataset))]
+    (if (empty? selected-columns)
+      (throw (RuntimeException. "No columns selected"))
+      (scols dataset selected-columns))))
