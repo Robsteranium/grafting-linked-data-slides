@@ -18,8 +18,8 @@ gulp.task('prepare', () => {
   const slides = gulp.src('index.haml')
 	  .pipe(haml())
 	  .pipe(replace(
-		  /(<link href=")(node_modules\/shower-ribbon\/)(styles\/screen-16x10.css" rel="stylesheet" \/>)/g,
-	      '$1shower/themes/ribbon/$3', { skipBinary: true }
+		  /(<link href=")(node_modules\/shower-material\/)(styles\/screen-16x10.css" rel="stylesheet" \/>)/g,
+	      '$1shower/themes/material/$3', { skipBinary: true }
 	  ))
 	  .pipe(replace(
 		  /(<script src=")(node_modules\/shower-core\/)(shower.min.js"><\/script>)/g,
