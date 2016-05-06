@@ -2,6 +2,8 @@
 
 A presentation prepared for Clojure Berlin: http://www.meetup.com/Clojure-Berlin/events/226728445/.
 
+You can view the slides here: https://robsteranium.github.io/grafting-linked-data-slides.
+
 This talk is based upon our experiences creating [Grafter](http://grafter.org), a library for turning spreadsheets into linked-data produced by [Swirrl](http://swirrl.com) for their PublishMyData platform.
 
 For those new to clojure we introduce the threading macro and show how it can be used to create more legible data processing pipelines.
