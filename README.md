@@ -1,62 +1,36 @@
-# Shower Presentation Template
+# Grafting Linked Data (what a billion rows taught us about pipelines)
 
-<img src="pictures/logo.png" width="250" alt="Shower logo">
+A presentation prepared for Clojure Berlin: http://www.meetup.com/Clojure-Berlin/events/226728445/.
 
-> Shower ['ʃəuə] noun. A person or thing that shows.
+This talk is based upon our experiences creating [Grafter](http://grafter.org), a library for turning spreadsheets into linked-data produced by [Swirrl](http://swirrl.com) for their PublishMyData platform.
 
-1. Built on HTML, CSS and vanilla JavaScript
-2. Works in all modern browsers
-3. Themes are separated from engine
-4. Modular and extensible
-5. Fully keyboard accessible
-6. Printable to PDF
+For those new to clojure we introduce the threading macro and show how it can be used to create more legible data processing pipelines.
 
-[See it in action](http://shwr.me/). Includes [Ribbon](https://github.com/shower/ribbon/) and [Material](https://github.com/shower/material/) themes, and [core](https://github.com/shower/core/) with plugins.
+For those more familiar with clojure we share some tips for the efficient processing of lazy sequences (in particular, how to avoid holding onto the head of the sequence).
 
-Follow [@shower_me](https://twitter.com/shower_me) for support and updates, [file an issue](https://github.com/shower/shower/issues/new) if you have any.
+A general introduction to linked-data and RDF is provided, no background knowledge is required.
 
-## Quick Start
 
-1. Download and unzip [template archive](http://shwr.me/shower.zip)
-2. Open `index.html` and start creating your presentation
+## Building the slides
 
-## Advanced
+You'll need `npm` to build these slides. First get the dependencies:
 
-1. [Fork](https://github.com/shower/shower/fork) this repository
-2. Go to fork setting and rename it: `shower` → `my-slides`
-2. Clone it to your computer: `git clone git@github.com:username/my-slides.git`
-3. Go to `my-slides` folder and install dependencies: `npm install`
-4. Start creating your presentation
+    npm install
 
-Once you’re done you can build a clean copy of your slides:
+To have the slides regenerated as you edit [index.haml](/index.haml):
 
-	npm run prepare
+    npm run watch
 
-And you’ll find your presentation in `prepared` folder with only needed files in it. You can also run `npm run archive` to get the same files in `archive.zip`. But there’s more! You can easily publish your presentation online by running:
+Or to build the slides one time:
 
-	npm run publish
+    npm run prepare
 
-And you’ll have your slides published on `http://username.github.io/my-slides/`.
+Or to create a zip of the content for deployment:
 
-## Usage Examples
+    npm run archive
 
-- [Installable Web Apps](http://pepelsbey.net/pres/web-apps/)
-- [Clear and Sharp](http://pepelsbey.net/pres/clear-and-sharp/)
-- [CSS Management](http://pepelsbey.net/pres/knife-train/)
-- [Push it!](http://pepelsbey.net/pres/push-it/)
-- [Pre-fixes](http://pepelsbey.net/pres/pre-fixes/)
-- [Web In Curves](http://pepelsbey.net/pres/web-in-curves/)
-- [Sense Coding](http://pepelsbey.net/pres/sense-coding/)
+## License
 
-## Browser Support
+These slides are licensed under the [Creative Commons Attribution-ShareAlike 4.0 International Public License](https://creativecommons.org/licenses/by-sa/4.0/).
 
-Latest stable versions of Chrome, Internet Explorer, Firefox, Opera and Safari are supported.
-
-## Contributing
-
-You’re always welcome to contribute. Fork project, make changes and send it as pull request. But it’s better to file an [issue](https://github.com/shower/shower/issues) with your idea first. Read [contributing rules](CONTRIBUTING.md) for more details.
-
-Main contributors in historical order: [pepelsbey](https://github.com/pepelsbey), [jahson](https://github.com/jahson), [miripiruni](https://github.com/miripiruni), [kizu](https://github.com/kizu), [artpolikarpov](https://github.com/artpolikarpov), [tonyganch](https://github.com/tonyganch), [zloylos](https://github.com/zloylos).
-
----
-Licensed under [MIT License](LICENSE.md).
+They were built using [Shower](https://github.com/shower/shower) which is released under an MIT License. 
