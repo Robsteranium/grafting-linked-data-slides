@@ -110,7 +110,7 @@ gulp.task('clean', () => {
 });
 
 gulp.task('watch', () => {
-    watch('index.haml', batch(function (events, done) {
+    watch(['index.haml','css/extra.css'], batch(function (events, done) {
 	gulp.start('prepare', done);
     }));
 });

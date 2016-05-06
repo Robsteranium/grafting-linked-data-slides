@@ -8,35 +8,60 @@
     %meta(content="width=device-width, initial-scale=1" name="viewport")/
     %link(href="node_modules/shower-material/styles/screen-16x10.css" rel="stylesheet")/
     %link(href="css/syntax-highlighting.css" rel="stylesheet")/
+    %link(href="css/extra.css" rel="stylesheet")/
   %body.shower.list
     %header.caption
-      %h1 One Billion Rows
+      %h1 Grafting Linked Data
       %p Robin Gower, Infonomics
     %section#cover.slide
-      %h2 One Billion Rows
-      %p
+      %img.cover(alt="" src="pictures/pipes.png")/
+      %h1 Grafting Linked Data
+      %h2 What a billion rows taught us about pipelines 
+      %h3
         %a(href="http://infonomics.ltd.uk") Robin Gower
-      %img.cover(alt="" src="pictures/cover.jpg")/
+      %p#credit
+        %span Image Credit:
+        %span
+          %a(href="https://www.flickr.com/photos/thomasrousing/") Thomas Rousing
+        %span CC BY 2.0
       /
         To apply styles to the certain slides
         set slide ID to get needed elements
       :css
-        #cover h2 {
-        	margin:30px 0 0;
-        	color:#FFF;
-        	text-align:center;
-        	font-size:70px;
-        	}
-        #cover p {
-        	margin:10px 0 0;
-        	text-align:center;
-        	color:#FFF;
-        	font-style:italic;
-        	font-size:20px;
-        	}
-        #cover p a {
-        	color:#FFF;
+        #cover h1, #cover h2, #cover h3 {
+          color: #FFF;
+          text-align: center;
+          font-family: rokkittregular;
+          line-height: 1;
           }
+        #cover h1 {
+        	margin: 0 0 1em 0;
+                font-size: 70px;
+                }
+        #cover h2 {
+        	margin: 0 3em 1em 3em;
+        	font-size:50px;
+        	}
+        #cover h3 {
+        	margin:0 0 0 0;
+        	font-size:30px;
+        	}
+        #cover a {
+        	color:#FFF;
+                text-decoration: none;
+                background: none;
+                }
+        #cover p#credit {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                color: #FFF;
+                text-align: right;
+                font-size: 12px;
+                }
+        #cover p span {
+                margin-right: 0.5em;
+                }
     %section.slide
       %h2 Getting to a billion rows...
       %ol
@@ -49,6 +74,7 @@
         %li Garbage collection
       -#%p.note Shower ['ʃəuə] noun. A person or thing that shows.
     %section.slide
+      %img(alt="RDF logo" src="pictures/linked-data.png" style="float: right")
       %h2 What is linked-data?
       %ul
         %li Graph-based data model
@@ -59,10 +85,10 @@
     %section.slide
       %img.cover(alt="Bob, Alice and the Mona Lisa" src="pictures/example-graph.jpg")
     %section.slide
-      %h2 Triples: Subject-Predicate-Object
+      %h2 Subject Predicate Object
       %p
         :pre
-          <code class="nohighlight">
+          <code class="turtle">
             person:Bob a thing:Person ;
               :friendOf person:Alice ;
               :bornOn "1990-07-04"^^xsd:date ;
@@ -74,7 +100,7 @@
       %h2 SPARQL
       %p
         :pre
-          <code class="sql">
+          <code class="SQL">
             SELECT * WHERE {
               ?s ?p ?o .
             }
@@ -82,53 +108,222 @@
         :pre
           <code class="SQL">
             SELECT * WHERE {
-              ?s a thing:Person .
+              ?s a thing:Person ;
+                 rdfs:label "Alice" ;
+                 .
             }
           </code>
     %section.slide
-      %img.cover(alt="Grafter logo" src="pictures/grafter-logo.png")
+      %h2 Grafter
+      %img(alt="Grafter logo" src="pictures/grafter-logo.png" style="float: right;")
+      %ul
+        %li Domain Specific Language
+        %li Composable Transformations
+        %li Lazy Sequences
     %section.slide
-      %h2 CSV source
+      %img(alt="Data flow with grafter" src="pictures/flow.png" style="height: 80%; float: left")
+      %img(alt="Grafter templates" src="pictures/grafter-example.png" style="height: 80%; float: right")
+    %section.slide
+      %h2 Domain Specific Language
       %p
         :pre
-          friend-a, friend-b
-          Alice, Bob
-          Alice, Carol
-          Dan, Eve
+          <code class="clojure">
+            (def the-guide (->uri ""http://d-nb.info/gnd/4283976-2")
+            (def douglas-adams (->uri "http://d-nb.info/gnd/119033364")
+
+            (graph deutsche-national-bibliothek
+                   [the-guide
+                    [rdf:a gnd:Work]
+                    [gndo:variantNameForTheWork "Per Anhalter durch die Galaxis"]
+                    [gndo:preferredNameForTheWork "The hitchhiker's guide to the galaxy"]
+                    [gndo:firstAuthor douglas-adams]]
+                   [douglas-adams
+                    [rdf:a gnd:DifferentiatedPerson]
+                    [gndo:variantNameForThePerson "Adams, Douglas Noël"]
+                    [foaf:page (->uri "http://de.wikipedia.org/wiki/Douglas_Adams")]
+                    [gndo:dateOfBirth #inst "1952-03-11"]])
+          </code>    
     %section.slide
-      %h2 Pipeline
+      %h2 Composable Transformations
+      %img.cover(alt="Composable transformation" src="pictures/composable-transformation.png")
     %section.slide
       %h2 The Threading Macro
       %p
         :pre
-          <code class="clojure">
-            (defn my-pipeline [input]
-              (write-result
-                (process-contents
-                  (read-input input)
-                  capitalise)
-                "output.txt"))
-
-            (defn my-threaded-pipeline [input]
-              (-> (read-input input)
-                  (process-contents capitalise)
-                  (write-result "output.txt)))
+          <code class="clojure">(read-input file)</code>
+        :pre      
+          <code class="clojure next">(process-contents (read-input file) capitalise)</code>
+        :pre
+          <code class="clojure next">(write-result (process-contents (read-input file) capitalise) "output.txt")</code>
+      %p
+        :pre
+          <code class="clojure next">
+          (-> (read-input input)
+              (process-contents capitalise)
+              (write-result "output.txt"))
           </code>
     %section.slide
-      %h2 Thread Last and the Seq Abstraction
+      %h2 Threading Sequables
+      %p
+        :pre
+          <code class='clojure'>(->> (range 0 20)    ;=> (0 1 2 3 4 ...)</code>
+          <code class='clojure next'>     (remove #{1 5}) ;=> (0 2 3 4 6 ...)</code>
+          <code class='clojure next'>     (filter even?)  ;=> (0 2 4 6 8 ...)</code>
+          <code class='clojure next'>     (map inc)       ;=> (1 3 5 7 9 ...)</code>
+          <code class='clojure next'>     (interpose "-") ;=> (1 "-" 3 "-" 5 ...)</code>
+          <code class='clojure next'>     (apply str))    ;=> "1-3-5-7-9-11-13-15-17-19"</code>
+      %p
+        :pre
+          <code class='clojure next'>
+          (->> (slurp "http://loripsum.net/api/10/short/plaintext")
+               #(clojure.string/split % #"\n")
+               (remove empty?)
+               (map clojure.string/upper-case)
+               (apply str)
+               (spit "shouty-lorem.txt"))
+          </code>
+    %section.slide
+      %h2 A Grafter Pipeline
       %p
         :pre
           <code class="clojure">
+          (defn prepare [filename]
+            (-> filename
+                (read-dataset :format :csv)
+                (make-dataset move-first-row-to-header)
+                (rename-columns {"date" :date-string})
+                (derive-column :date-of-birth clj-time.format/parse)
+                (derive-column :age :date-of-birth #(-> % (interval (now)) in-years))))
           </code>
     %section.slide
       %h2 Lazy Sequences
-      %p Can be infinite, store data for getting to the next step
+      %ul
+        %li A sequence that is only realised when it is needed
+        %li Returns a value and a function for getting to the next value
+        %li Makes it possible to have infinite sequences or ones too big to hold in memory
+    %section.slide
+      %h2 Infinite Sequence
+      %p
+        :pre
+          <code class="clojure">
+          (iterate inc 0)            ;=> (0 1 2 ...)
+          (take 5 (iterate inc 0))   ;=> (0 1 2 3 4)
+          (drop 8 (iterate inc 0))   ;=> (8 9 10 ...)
+          </code>
+        :pre
+          <code class="clojure next">
+          (defn iterate [fn val]
+            (cons val (lazy-seq (iterate fn (fn val)))))
+          </code>
     %section.slide
       %h2 Holding onto the Head
-      %p examples...
+      %ul
+        %li Lazy sequences cache values once they're realised
+        %li If a there are references to realized values they remain in memory
+        %li You must release the head of the sequence to free up memory
+    %section.slide
+      %h2 Visual VM
+      %ul
+        %li Comes with the JDK
+        %li Basic version shows how the overall heap evolves
+        %li Visual GC plugin shows this by generation (eden, survivors, old)
+    %section.slide
+      %h2 Holding onto the head
+      :pre
+        <code class="clojure">
+        (let [coll (range 0 1e10)]
+          [(last coll) (first coll)]))
+        ;=> OutOfMemoryError GC overhead limit exceeded  java.lang.Long.valueOf (Long.java:840)
+        </code>
+      %img(src="pictures/gc-head.png" style="width: 80%; margin: auto; display: block;")
+    %section.slide
+      %h2 Releasing the head
+      :pre
+        <code class="clojure">
+        (let [coll (range 0 1e10)]
+          [(first coll) (last coll)]))
+        ;=> [0 9999999999]
+        </code>
+      %img(src="pictures/gc-no-head.png" style="width: 80%; margin: auto; display: block;")
+    %section.slide
+      %h2 Can you see what's wrong?
+      %p
+        :pre
+          <code class="clojure">
+          (defn pass-rows [dataset f]
+            (-> (make-dataset (->> dataset :rows f)
+                               (column-names dataset))
+                (with-meta (meta dataset))))
+          </code>
+        :pre
+          <code class="clojure next">
+          (defn pass-rows [dataset f]
+            (let [original-meta (meta dataset)
+                  original-columns (column-names dataset)]
+               (-> (make-dataset (->> dataset :rows f)
+                                  original-columns)
+                   (with-meta original-meta))))
+          </code>
+    %section.slide
+      %h2 More subtle this time...
+      %p
+        :pre
+          <code class="clojure">
+          (defn domain-data (->url "http://statistics.gov.uk/data"))
+
+          (defn append-path-segments [url & segments]
+            (append-path-segments* url segments))
+
+          (def observation-uri
+            (partial append-path-segments domain-data))
+          </code>
+        :pre
+          <code class="clojure next">
+          (defn observation-uri [dataset time geo dimensions unit measure]
+            (append-path-segments domain-data dataset time geo dimensions unit measure))
+          </code>
     %section.slide
       %h2 Too Lazy
+      %p ...
     %section.slide
       %h2 Garbage Collection
+      %p ...
+    %section.slide.links
+      :css
+        .links img {
+          width: 2em;
+          vertical-align: middle;
+          margin-right: 1em;
+        }
+        .links a {
+          background: none;
+        }
+        .links div {
+          margin-bottom: 1em;
+        }
+        .links div.row {
+          margin-bottom: 2em;
+        }
+      %p
+        %div.row
+          %div
+            %img(src="pictures/www.png")
+            %a(href="http://grafter.org") grafter.org
+          %div
+            %img(src="pictures/github.png")
+            %a(href="http://github.com/Swirrl/grafter") Swirrl/grafter
+            = ", "
+            %a(href="http://github.com/Swirrl/grafter-url") grafter-url
+            = ", "
+            %a(href="http://github.com/Swirrl/grafter-extra") grafter-extra
+            = " & "
+            %a(href="http://github.com/Swirrl/grafter-vocabularies") grafter-vocabularies
+        %div.row
+          %div
+            %img(src="pictures/www.png")
+            %a(href="http://infonomics.ltd.uk") infonomics.ltd.uk
+          %div
+            %img(src="pictures/twitter.png")
+            %a(href="http://twitter.com/robsteranium") @robsteranium
   .progress
   %script(src="node_modules/shower-core/shower.min.js")
