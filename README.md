@@ -27,9 +27,14 @@ Or to build the slides one time:
 
     npm run prepare
 
-Or to create a zip of the content for deployment:
+To create a zip of the content for deployment:
 
     npm run archive
+
+Or to publish directly to the `gh-pages` remote branch (i.e. publish on github):
+
+    npm run publish
+
 
 ## License
 
