@@ -36,7 +36,7 @@ set slide ID to get needed elements--><style type="text/css">
 #cover p span {
         margin-right: 0.5em;
         }
-</style></section><section class="slide"><h2>Getting to a billion rows...</h2><ol><li>What is linked-data?</li><li>A grafter pipeline</li><li>The threading macro</li><li>Lazy sequences</li><li>Holding onto the head</li><li>Too much laziness</li><li>Garbage collection</li></ol></section><section class="slide"><img alt="RDF logo" src="pictures/linked-data.png" style="float: right"><h2>What is linked-data?</h2><ul><li>Graph-based data model</li><li>Everything is a URI</li><li>URIs are URLs (dereference them to get stuff)</li><li>Multiple Serialisations (e.g. turtle)</li><li>SPARQL query language</li></ul></section><section class="slide"><img alt="Bob, Alice and the Mona Lisa" src="pictures/example-graph.jpg" class="cover"></section><section class="slide"><h2>Subject Predicate Object</h2><p><pre>
+</style></section><section class="slide"><h2>Getting to a billion rows...</h2><ol><li>What is linked-data?</li><li>A grafter pipeline</li><li>The threading macro</li><li>Lazy sequences</li><li>Holding onto the head</li></ol></section><section class="slide"><img alt="RDF logo" src="pictures/linked-data.png" style="float: right"><h2>What is linked-data?</h2><ul><li>Graph-based data model</li><li>Everything is a URI</li><li>URIs are URLs (dereference them to get stuff)</li><li>Multiple Serialisations (e.g. turtle)</li><li>SPARQL query language</li></ul></section><section class="slide"><img alt="Bob, Alice and the Mona Lisa" src="pictures/example-graph.jpg" class="cover"></section><section class="slide"><h2>Subject Predicate Object</h2><p><pre>
 <code class="turtle">
   <span class="hljs-selector-tag">person</span><span class="hljs-selector-pseudo">:Bob</span> <span class="hljs-selector-tag">a</span> <span class="hljs-selector-tag">thing</span><span class="hljs-selector-pseudo">:Person</span> ;
     <span class="hljs-selector-pseudo">:friendOf</span> <span class="hljs-selector-tag">person</span><span class="hljs-selector-pseudo">:Alice</span> ;
@@ -112,7 +112,7 @@ set slide ID to get needed elements--><style type="text/css">
 <code class="clojure next">
 (<span class="hljs-name"><span class="hljs-builtin-name">defn</span></span> iterate [fn val]
   (<span class="hljs-name"><span class="hljs-builtin-name">cons</span></span> val (<span class="hljs-name"><span class="hljs-builtin-name">lazy-seq</span></span> (<span class="hljs-name"><span class="hljs-builtin-name">iterate</span></span> fn (<span class="hljs-name"><span class="hljs-builtin-name">fn</span></span> val)))))
-</code></pre></p></section><section class="slide"><h2>Holding onto the Head</h2><ul><li>Lazy sequences cache values once they're realised</li><li>If a there are references to realized values they remain in memory</li><li>You must release the head of the sequence to free up memory</li></ul></section><section class="slide"><h2>Visual VM</h2><ul><li>Comes with the JDK</li><li>Basic version shows how the overall heap evolves</li><li>Visual GC plugin shows this by generation (eden, survivors, old)</li></ul></section><section class="slide"><h2>Holding onto the head</h2><pre>
+</code></pre></p></section><section class="slide"><h2>Holding onto the Head</h2><ul><li>Lazy sequences cache values once they're realised (for speed and to ensure immutability)</li><li>If a there are references to realized values they remain in memory</li><li>You must release the head of the sequence to free up memory (otherwise each holds onto the next)</li></ul></section><section class="slide"><h2>Visual VM</h2><ul><li>Comes with the JDK</li><li>Basic version shows how the overall heap evolves</li><li>Visual GC plugin shows this by generation (eden, survivors, old)</li></ul></section><section class="slide"><h2>Holding onto the head</h2><pre>
 <code class="clojure">
 (<span class="hljs-name"><span class="hljs-builtin-name">let</span></span> [<span class="hljs-name">coll</span> (<span class="hljs-name">range</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span>e10)]
   [(<span class="hljs-name">last</span> coll) (<span class="hljs-name">first</span> coll)]))
@@ -149,7 +149,19 @@ set slide ID to get needed elements--><style type="text/css">
 <code class="clojure next">
 (<span class="hljs-name"><span class="hljs-builtin-name">defn</span></span> observation-uri [dataset time geo dimensions unit measure]
   (<span class="hljs-name">append-path-segments</span> domain-data dataset time geo dimensions unit measure))
-</code></pre></p></section><section class="slide"><h2>Too Lazy</h2><p>...</p></section><section class="slide"><h2>Garbage Collection</h2><p>...</p></section><section class="slide links"><style type="text/css">
+</code></pre></p></section><section class="slide"><h2>Memory vs CPU trade-off</h2><p><pre>
+<code class="clojure">
+(<span class="hljs-name"><span class="hljs-builtin-name">defn</span></span> pipeline [big-input]
+  (<span class="hljs-name">lazy-cat</span>
+    (<span class="hljs-name"><span class="hljs-builtin-name">-&gt;</span></span> big-input process-a)
+    (<span class="hljs-name"><span class="hljs-builtin-name">-&gt;</span></span> big-input process-b)))
+</code></pre><pre>
+<code class="clojure next">
+(<span class="hljs-name"><span class="hljs-builtin-name">defn</span></span> pipeline [get-big-input]
+  (<span class="hljs-name">lazy-cat</span>
+    (<span class="hljs-name"><span class="hljs-builtin-name">-&gt;</span></span> (<span class="hljs-name">get-big-input</span>) process-a)
+    (<span class="hljs-name"><span class="hljs-builtin-name">-&gt;</span></span> (<span class="hljs-name">get-big-input</span>) process-b)))
+</code></pre></p></section><section class="slide links"><style type="text/css">
 .links img {
   width: 2em;
   vertical-align: middle;

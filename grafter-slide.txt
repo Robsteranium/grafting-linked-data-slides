@@ -1,3 +1,13 @@
+Grafting Linked Data (what a billion rows taught us about pipelines)
+
+Robin is a freelance developer and economist. He worked with Swirrl to create Grafter, a clojure library for turning spreadsheets into linked-data. In this talk he will share some tips for writing legible and efficient pipelines.
+
+
+
+He will share some lessons from writing pipelines to build linked-data 
+
+talk about Grafter, a data transformation library written in clojure.  Swirrl to prepare data for their PublishMyData platform.
+
 How we grew a simple DSL to handle 
 
 
@@ -9,9 +19,7 @@ Story: started with dsl idea/ began doing lazy stuff/ worked ok until hit big st
 3's
 curiosity: secrets of a billion row pipeline
 concern: how not to handle a billion rows, how to run out of memory
-
 3 lessons from a billion rows
-
 
 promise benefits/ story
 Learn the secrets of a billion row pipeline
@@ -23,22 +31,12 @@ One Billion Rows
 
 Don't Hold Onto The Head
 and other lessons learned making a billion quads
-
 How to manufacture a billion quads without setting your processor on fire
-
-
 Grafter is a library for producing linked data (RDF), typically from spreadsheets. 
-
 After a brief introduction to linked-data and grafter we will explore 
-
 - the beauty of threading
 - don't hold onto the head
-
 and then go on to explore several topics that might be useful
-
-
-Robin is a freelance infonomist based in Berlin. He's been working on Grafter with Swirrl to prepare data for their PublishMyData platform.
-
 
 
 Grafter
