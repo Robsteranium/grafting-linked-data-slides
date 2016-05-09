@@ -70,8 +70,6 @@
         %li The threading macro
         %li Lazy sequences
         %li Holding onto the head
-        %li Too much laziness
-        %li Garbage collection
     %section.slide
       %img(alt="RDF logo" src="pictures/linked-data.png" style="float: right")
       %h2 What is linked-data?
@@ -220,9 +218,9 @@
     %section.slide
       %h2 Holding onto the Head
       %ul
-        %li Lazy sequences cache values once they're realised
-        %li If a there are references to realized values they remain in memory
-        %li You must release the head of the sequence to free up memory
+        %li Lazy sequences cache values once they're realised (for speed and to ensure immutability)
+        %li If a there are references to realized values they remain in memory 
+        %li You must release the head of the sequence to free up memory (otherwise each holds onto the next)
     %section.slide
       %h2 Visual VM
       %ul
@@ -285,11 +283,22 @@
             (append-path-segments domain-data dataset time geo dimensions unit measure))
           </code>
     %section.slide
-      %h2 Too Lazy
-      %p ...
-    %section.slide
-      %h2 Garbage Collection
-      %p ...
+      %h2 Memory vs CPU trade-off
+      %p
+        :pre
+          <code class="clojure">
+          (defn pipeline [big-input]
+            (lazy-cat
+              (-> big-input process-a)
+              (-> big-input process-b)))
+          </code>
+        :pre
+          <code class="clojure next">
+          (defn pipeline [get-big-input]
+            (lazy-cat
+              (-> (get-big-input) process-a)
+              (-> (get-big-input) process-b)))
+          </code>
     %section.slide.links
       :css
         .links img {
