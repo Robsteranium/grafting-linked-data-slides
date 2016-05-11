@@ -128,7 +128,7 @@
       %p
         :pre
           <code class="clojure">
-            (def the-guide (->uri ""http://d-nb.info/gnd/4283976-2")
+            (def the-guide (->uri "http://d-nb.info/gnd/4283976-2")
             (def douglas-adams (->uri "http://d-nb.info/gnd/119033364")
 
             (graph deutsche-national-bibliothek
@@ -151,10 +151,15 @@
       %p
         :pre
           <code class="clojure">(read-input file)</code>
-        :pre      
           <code class="clojure next">(process-contents (read-input file) capitalise)</code>
-        :pre
           <code class="clojure next">(write-result (process-contents (read-input file) capitalise) "output.txt")</code>
+      %p
+        :pre
+          <code class="clojure next">
+          (let [contents (read-input file)
+                results (process-contents contents)]
+            (write-result results "output.txt"))
+          </code>
       %p
         :pre
           <code class="clojure next">
