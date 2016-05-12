@@ -36,8 +36,11 @@ set slide ID to get needed elements--><style type="text/css">
 #cover p span {
         margin-right: 0.5em;
         }
-p {
+p, li {
   line-height: 1.4em;
+}
+li {
+  margin-bottom: 0.6em;
 }
 </style></section><section class="slide"><h2>Getting to a billion rows...</h2><ol><li>What is linked-data?</li><li>A grafter pipeline</li><li>The threading macro</li><li>Lazy sequences</li><li>Holding onto the head</li></ol></section><section class="slide"><img alt="RDF logo" src="pictures/linked-data.png" style="float: right"><h2>What is linked-data?</h2><ul><li>Graph-based data model</li><li>Everything is a URI</li><li>URIs are URLs (dereference them to get stuff)</li><li>Multiple Serialisations (e.g. turtle)</li><li>SPARQL query language</li></ul></section><section class="slide"><img alt="Bob, Alice and the Mona Lisa" src="pictures/example-graph.jpg" class="cover"></section><section class="slide"><h2>Subject Predicate Object</h2><p><pre>
 <code class="turtle">
