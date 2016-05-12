@@ -62,6 +62,9 @@
         #cover p span {
                 margin-right: 0.5em;
                 }
+        p {
+          line-height: 1.4em;
+        }
     %section.slide
       %h2 Getting to a billion rows...
       %ol
@@ -167,6 +170,9 @@
               (process-contents capitalise)
               (write-result "output.txt"))
           </code>
+      %p(style="float: right")
+        %a(href="http://clojure.org/guides/threading_macros")
+          http://clojure.org/guides/threading_macros
     %section.slide
       %h2 Threading Sequables
       %p
@@ -181,7 +187,7 @@
         :pre
           <code class='clojure next'>
           (->> (slurp "http://loripsum.net/api/10/short/plaintext")
-               #(clojure.string/split % #"\n")
+               (#(clojure.string/split % #"\n"))
                (remove empty?)
                (map clojure.string/upper-case)
                (apply str)
@@ -197,9 +203,13 @@
                 (read-dataset :format :csv)
                 (make-dataset move-first-row-to-header)
                 (rename-columns {"date" :date-string})
-                (derive-column :date-of-birth clj-time.format/parse)
+                (derive-column :date-of-birth :date-string clj-time.format/parse)
                 (derive-column :age :date-of-birth #(-> % (interval (now)) in-years))))
           </code>
+      %p Composition achieved by having each function take a dataset as the first argument and return a dataset.
+      %p Transformations can be parametised and arranged in a GUI.        
+    %section.slide
+      %img.cover(src="pictures/datagraft.png")
     %section.slide
       %h2 Lazy Sequences
       %ul
@@ -325,6 +335,10 @@
           %div
             %img(src="pictures/www.png")
             %a(href="http://grafter.org") grafter.org
+            = ", "
+            %a(href="https://datagraft.net") DataGraft
+            = ", "
+            %a(href="http://www.swirrl.com/") PublishMyData
           %div
             %img(src="pictures/github.png")
             %a(href="http://github.com/Swirrl/grafter") Swirrl/grafter
